@@ -1,25 +1,43 @@
-# GitHub Workflows
+<div align="center">
 
-My workflows centralized for reuse across my repositories.
+<h1>GitHub Workflows</h1>
+
+My GitHub workflows. Centralized for reuse.
+
+</div>
+
+**Table of contents**
+
+- [Published workflows](#published-workflows)
+  - [npm-ci-build](#npm-ci-build)
+- [Goal: Universal targets](#goal-universal-targets)
+  - [Industry observations](#industry-observations)
+  - [My universal targets](#my-universal-targets)
+  - [My universal output locations](#my-universal-output-locations)
+- [Style conventions](#style-conventions)
 
 ## Published workflows
 
-This repository publishes the following workflows.
-
-- [npm-ci-build](#npm-ci-build): Executes `ci-build` logic for npm packages.
-
 > [!NOTE]
 >
-> The workflows use version numbers in the file name rather than using tags on this repository (example: `foo@v1.yaml`).
+> The workflows use file versioning (`name@v1.yaml`) instead of repository tags.
 >
-> This provides independent versioning of the workflows while maintaining all of them in one repository.
-> It also allows me to support older versions on the `main` branch seamlessly (for example, upgrading all checkout actions).
+> <details><summary>Why?</summary><div>
+> This provides independent versioning of the workflows while maintaining them in one repository.
+> It also allows supporting older versions on the <code>main</code> branch (for example, upgrading all checkout actions).
+> </div></details>
 
 ### npm-ci-build
 
 Job that executes `ci-build` logic for npm packages.
 
-- `v1` runs `ci-build` directly and assumes that the underlying package orchestrates the full build correctly.
+```yaml
+jobs:
+  ci-build:
+    uses: connorjs/github-workflows/.github/workflows/npm-ci-build@v1.yaml
+```
+
+`v1` runs `ci-build` directly and assumes that the underlying package orchestrates the full build correctly.
 
 <details>
 <summary>Show inputs, outputs, assumptions, and notes</summary>
