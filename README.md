@@ -4,22 +4,58 @@ My workflows centralized for reuse across my repositories.
 
 ## Published workflows
 
+This repository publishes the following workflows.
+
+- [npm-ci-build](#npm-ci-build): Executes `ci-build` logic for npm packages.
+
+> [!NOTE]
+>
+> The workflows use version numbers in the file name rather than using tags on this repository (example: `foo@v1.yaml`).
+>
+> This provides independent versioning of the workflows while maintaining all of them in one repository.
+> It also allows me to support older versions on the `main` branch seamlessly (for example, upgrading all checkout actions).
+
 ### npm-ci-build
 
 Job that executes `ci-build` logic for npm packages.
-`v1` runs `ci-build` directly and assumes that the underlying package orchestrates the full build correctly.
 
-Use a `.node-version` file in the root of the repository to set the Node.js version.
+- `v1` runs `ci-build` directly and assumes that the underlying package orchestrates the full build correctly.
+
+<details>
+<summary>Show inputs, outputs, assumptions, and notes</summary>
+
+#### Inputs
+
+|      Name      |  Default  |  Type   |                                         Description                                         |
+|:--------------:|:---------:|:-------:|:-------------------------------------------------------------------------------------------:|
+|  `has-tests`   |  `true`   | boolean |  Whether the project has tests.<br>Used to skip test reporting for projects with no tests.  |
+| `project-type` | `library` | choice  | The type of project: `application` or `library`.<br>Used to customize the CI build process. |
+
+#### Outputs
+
+|   Name   |                             Description                              |
+|:--------:|:--------------------------------------------------------------------:|
+| `semVer` | The SemVer version number of this build (automated with GitVersion). |
+
+#### Assumptions
+
+The job makes the following assumptions about the repository.
+
+- Uses a `.node-version` file in the root of the repository to set the Node.js version.
+- Uses npm (not yarn or pnpm).
+- The `package.json` uses `0.0.0-gitversion` for its version (enables GitVersion automation).
+
+#### Notes
 
 The job includes automatic versioning via GitVersion.
 It will replace `0.0.0-gitversion` with the correct version.
 _Note: While another tool could replace GitVersion, the automatic version string will remain `0.0.0-gitversion`._
 
-The job will output a `semver` variable with the SemVer version.
-
 Note: The job will ignore any local `GitVersion.yaml`; it configures GitVersion for continuous deployment internally.
 Use `+semver:(major|minor)` in commit messages appropriately.
 (Patch happens automatically.)
+
+</details>
 
 ## Goal: Universal targets
 
