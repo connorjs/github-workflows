@@ -1,0 +1,41 @@
+on:
+  workflow_call:
+    inputs: {}
+
+jobs:
+  npm-ci-build:
+    name: npm run ci-build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout self
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full depth (not shallow) for GitVersion
+
+      - name: Set up GitVersion
+        uses: gittools/actions/gitversion/setup@v2.0.1
+        with:
+          versionSpec: 6.x
+
+      - name: Execute GitVersion
+        id: GitVersion
+        uses: gittools/actions/gitversion/execute@v2.0.1
+        with:
+          overrideConfig: |
+            workflow=GitHubFlow/v1
+            mode=ContinuousDeployment
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: .node-version
+
+      - name: Install
+        run: npm ci --strict-peer-deps
+
+      - name: CI build
+        run: npm run ci-build
+
+      # TODO: Test artifacts
+      # TODO: Publish pack artifact
