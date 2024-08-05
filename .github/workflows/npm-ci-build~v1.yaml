@@ -25,9 +25,11 @@ jobs:
     steps:
       - name: Fail (invalid job input)
         if: inputs.project-type != 'application' || inputs.project-type != 'library'
-        uses: actions/github-script@v7
-        with:
-          script: core.setFailed("project-type MUST be one of `application` or `library`")
+        run: |
+          echo '::setFailed file=npm-ci-build~v1.yaml::project-type MUST be one of `application` or `library`, but was `${{ inputs.project-type }}`'
+#        uses: actions/github-script@v7
+#        with:
+#          script: core.setFailed("project-type MUST be one of `application` or `library`")
 
       - name: Checkout self
         uses: actions/checkout@v4
