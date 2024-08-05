@@ -18,12 +18,13 @@ on:
 
 jobs:
   npm-ci-build:
-    name: npm run ci-build
+    # Workflow names appear as `origin-name / workflow-name`, so use `npm` for something like `CI Build / npm`
+    name: npm
     runs-on: ubuntu-latest
     outputs:
       semVer: ${{ steps.GitVersion.outputs.semVer }}
     steps:
-      - name: Fail (invalid job input)
+      - name: Invalid project-type
         if: inputs.project-type != 'application' || inputs.project-type != 'library'
         uses: actions/github-script@v7
         with:

@@ -140,7 +140,7 @@ Each underlying build system should be able to hook into these standardized targ
 
 In CI (think code reviews or pull requests), the “build” executes many of these targets.
 Using the term “build” here would overload the target name though.
-Therefore, I use the term `ci-build` to group all targets that should run during the “CI build.”
+Therefore, I use the term `ci-build` to group all targets that should run during the “CI Build.”
 
 We called this `release` at Amazon, but I have found that folks think `release` means “make the release; actually publish,” which represents the wrong conclusion.
 Hence, I chose the term `ci-build`.
@@ -193,4 +193,5 @@ Some notes on how I style (format) my GitHub workflow files.
 - Automatically format files: Use prettier, an editor using .editorconfig, or a similar formatter.
 - Start each step with `name`.
 - Use sentence case for `name` (with allowed use of Proper Nouns when it helps such as GitVersion).
+  - Exception: Prefer “CI Build” (instead of “CI build” or “ci build”).
 - If a step (or job) would benefit from a longer description, include a YAML comment on the line after `name` (unless GitHub adds proper `description` field).
