@@ -32,7 +32,7 @@ jobs:
             if (!["application", "library"].includes(projectType)) {
               core.setFailed(`projectType MUST be one of 'application' or 'library', but was '${projectType}'`);
             }
-            core.info("\u001b[32mSuccess.");
+            core.info("\u001b[1m\u001b[32mSuccess.");
 
       - name: Checkout self
         uses: actions/checkout@v4
