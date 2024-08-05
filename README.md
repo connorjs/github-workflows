@@ -20,11 +20,17 @@ My GitHub workflows. Centralized for reuse.
 
 > [!NOTE]
 >
-> The workflows use file versioning (`name@v1.yaml`) instead of repository tags.
+> The workflows use file versioning (`name~v1.yaml`) instead of repository tags.
 >
 > <details><summary>Why?</summary><div>
+>
 > This provides independent versioning of the workflows while maintaining them in one repository.
 > It also allows supporting older versions on the <code>main</code> branch (for example, upgrading all checkout actions).
+>
+> File versioning uses the tilde (`~`) because GitHub prohibits `@` in workflow file names.
+> (GitHub uses `@` for repository references.)
+> The tilde still reads well, displays well in URLs, and is not often used in file names.
+>
 > </div></details>
 
 ### npm-ci-build
