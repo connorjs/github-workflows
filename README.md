@@ -15,7 +15,7 @@ The job includes automatic versioning via GitVersion.
 It will replace `0.0.0-gitversion` with the correct version.
 _Note: While another tool could replace GitVersion, the automatic version string will remain `0.0.0-gitversion`._
 
-The job will output a `version` variable with the SemVer version.
+The job will output a `semver` variable with the SemVer version.
 
 Note: The job will ignore any local `GitVersion.yaml`; it configures GitVersion for continuous deployment internally.
 Use `+semver:(major|minor)` in commit messages appropriately.

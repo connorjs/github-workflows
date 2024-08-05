@@ -2,16 +2,16 @@ on:
   workflow_call:
     inputs: {}
     outputs:
-      version:
-        description: The version number of this build (automated with GitVersion).
-        value: ${{ jobs.npm-ci-build.outputs.version }}
+      semVer:
+        description: The SemVer version number of this build (automated with GitVersion).
+        value: ${{ jobs.npm-ci-build.outputs.semVer }}
 
 jobs:
   npm-ci-build:
     name: npm run ci-build
     runs-on: ubuntu-latest
     outputs:
-      version: ${{ steps.GitVersion.outputs.GitVersion_SemVer }}
+      semVer: ${{ steps.GitVersion.outputs.GitVersion_SemVer }}
     steps:
       - name: Checkout self
         uses: actions/checkout@v4
