@@ -18,7 +18,7 @@ on:
 
 jobs:
   NpmCiBuild:
-    # Workflow names appear as `origin-name / workflow-name`, so use `npm` for something like `CI Build / npm`
+    # Workflow names appear as `origin name / workflow name`, so use `npm` for something like `CI Build / npm`
     name: npm
     runs-on: ubuntu-latest
     outputs:
@@ -28,10 +28,11 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const { projectType } = ${{ toJson(inputs) }}
+            const { projectType } = ${{ toJson(inputs) }};
             if (!["application", "library"].includes(projectType)) {
-              core.setFailed(`projectType MUST be one of 'application' or 'library', but was '${projectType}'`)
+              core.setFailed(`projectType MUST be one of 'application' or 'library', but was '${projectType}'`);
             }
+            core.info("Inputs successfully validated.");
 
       - name: Checkout self
         uses: actions/checkout@v4
