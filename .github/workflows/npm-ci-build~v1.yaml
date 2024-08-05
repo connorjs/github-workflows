@@ -26,7 +26,8 @@ jobs:
       - name: Fail (invalid job input)
         if: inputs.project-type != 'application' || inputs.project-type != 'library'
         uses: actions/github-script@v7
-        run: core.setFailed("project-type MUST be one of `application` or `library`")
+        with:
+          script: core.setFailed("project-type MUST be one of `application` or `library`")
 
       - name: Checkout self
         uses: actions/checkout@v4
