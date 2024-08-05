@@ -119,3 +119,18 @@ The standard output locations follow.
 
 - The HTML output from code coverage should have the name `artifacts/coverage/index.html`.
   This differs from `artifacts/test-results` to simplify developers opening the report and to prevent conflicts in monorepos.
+
+## Style conventions
+
+Some notes on how I style (format) my GitHub workflow files.
+
+- Use `kebab-case` for job and step IDs.
+- Use `kebab-case` for input names.
+- Use `camelCase` for variable names (outputs).
+- _This means never use `snake_case`, `PascalCase`, `TRAIN-CASE`, or `SCREAM_CASE` unless a 3rd party uses them._
+- Format expressions with inner spaces: `${{ foo.bar }}`.
+- Prefer no quotes if YAML does not require it.
+- Automatically format files: Use prettier, an editor using .editorconfig, or a similar formatter.
+- Start each step with `name`.
+- Use sentence case for `name` (with allowed use of Proper Nouns when it helps such as GitVersion).
+- If a step (or job) would benefit from a longer description, include a YAML comment on the line after `name` (unless GitHub adds proper `description` field).
