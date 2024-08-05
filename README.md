@@ -40,7 +40,7 @@ Job that executes `ci-build` logic for npm packages.
 ```yaml
 jobs:
   ci-build:
-    uses: connorjs/github-workflows/.github/workflows/npm-ci-build@v1.yaml
+    uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml
 ```
 
 `v1` runs `ci-build` directly and assumes that the underlying package orchestrates the full build correctly.
