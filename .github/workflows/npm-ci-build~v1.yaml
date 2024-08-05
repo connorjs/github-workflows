@@ -1,0 +1,71 @@
+on:
+  workflow_call:
+    inputs:
+      hasTests:
+        description: Whether the project has tests. Used to skip test reporting for projects with no tests.
+        type: boolean
+        required: false
+        default: true
+      projectType:
+        description: The type of project. Used to customize the CI build process. MUST be one of `application` or `library`.
+        type: string
+        required: false
+        default: library
+    outputs:
+      semVer:
+        description: The SemVer version number of this build (automated with GitVersion).
+        value: ${{ jobs.NpmCiBuild.outputs.semVer }}
+
+jobs:
+  NpmCiBuild:
+    # Workflow names appear as `origin name / workflow name`, so use `npm` for something like `CI Build / npm`
+    name: npm
+    runs-on: ubuntu-latest
+    outputs:
+      semVer: ${{ steps.GitVersion.outputs.semVer }}
+    steps:
+      - name: Validate inputs
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { projectType } = ${{ toJson(inputs) }};
+            if (!["application", "library"].includes(projectType)) {
+              core.setFailed(`projectType MUST be one of 'application' or 'library', but was '${projectType}'`);
+            }
+            core.info("\u001b[1m\u001b[32mSuccess.");
+
+      - name: Checkout self
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Full depth (not shallow) for GitVersion
+
+      - name: Set up GitVersion
+        uses: gittools/actions/gitversion/setup@v2.0.1
+        with:
+          versionSpec: 6.x
+
+      - name: Execute GitVersion
+        id: GitVersion
+        uses: gittools/actions/gitversion/execute@v2.0.1
+        with:
+          overrideConfig: |
+            workflow=GitHubFlow/v1
+            mode=ContinuousDeployment
+
+      - name: Set version
+        run: sed -i 's/0.0.0-gitversion/${{ env.semVer }}/g' package.json
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          cache: npm
+          node-version-file: .node-version
+
+      - name: Install
+        run: npm ci --strict-peer-deps
+
+      - name: CI build
+        run: npm run ci-build
+
+      # TODO: Test artifacts, using inputs.hasTests
+      # TODO: Publish pack artifact, using inputs.projectType
