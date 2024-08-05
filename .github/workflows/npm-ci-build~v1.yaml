@@ -28,9 +28,8 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            console.log(context);
-            console.log(`${{ inputs }}`)
-            const { projectType } = JSON.parse(`${{ inputs }}` || "{}")
+            console.log(${{ toJson(inputs) }})
+            const { projectType } = JSON.parse(${{ toJson(inputs) }})
             if (!["application", "library"].includes(projectType)) {
               core.setFailed("project-type MUST be one of `application` or `library`, but was `projectType`")
             }
