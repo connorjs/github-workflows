@@ -27,7 +27,7 @@ jobs:
         if: inputs.project-type != 'application' || inputs.project-type != 'library'
         uses: actions/github-script@v7
         with:
-          script: core.setFailed("project-type MUST be one of `application` or `library`")
+          script: core.setFailed("project-type MUST be one of `application` or `library`, but was `${{ inputs.project-type }}`")
 
       - name: Checkout self
         uses: actions/checkout@v4
