@@ -50,10 +50,10 @@ jobs:
 
 #### Inputs
 
-|      Name      |  Default  |  Type   |                                         Description                                         |
-|:--------------:|:---------:|:-------:|:-------------------------------------------------------------------------------------------:|
-|  `has-tests`   |  `true`   | boolean |  Whether the project has tests.<br>Used to skip test reporting for projects with no tests.  |
-| `project-type` | `library` | choice  | The type of project: `application` or `library`.<br>Used to customize the CI build process. |
+|     Name      |  Default  |  Type   |                                         Description                                         |
+|:-------------:|:---------:|:-------:|:-------------------------------------------------------------------------------------------:|
+|  `hasTests`   |  `true`   | boolean |  Whether the project has tests.<br>Used to skip test reporting for projects with no tests.  |
+| `projectType` | `library` | choice  | The type of project: `application` or `library`.<br>Used to customize the CI build process. |
 
 #### Outputs
 
@@ -184,14 +184,19 @@ The standard output locations follow.
 
 Some notes on how I style (format) my GitHub workflow files.
 
-- Use `kebab-case` for job and step IDs.
-- Use `kebab-case` for input names.
-- Use `camelCase` for variable names (outputs).
-- _This means never use `snake_case`, `PascalCase`, `TRAIN-CASE`, or `SCREAM_CASE` unless a 3rd party uses them._
+- The following naming rules ensure seamless script usage, such as in `actions/github-script`.
+  - Prefer `PascalCase` for job and step IDs.
+  - Prefer `camelCase` for variable names (inputs and outputs).
+  - _This means avoid `snake_case`, `kebab-case`, `TRAIN-CASE`, or `SCREAM_CASE` unless a 3rd party uses them._
+
 - Format expressions with inner spaces: `${{ foo.bar }}`.
-- Prefer no quotes if YAML does not require it.
+
+- Prefer no quotes if YAML does not require them.
+
 - Automatically format files: Use prettier, an editor using .editorconfig, or a similar formatter.
+
 - Start each step with `name`.
-- Use sentence case for `name` (with allowed use of Proper Nouns when it helps such as GitVersion).
+  - Use sentence case for `name` (with allowed use of Proper Nouns when it helps such as GitVersion).
   - Exception: Prefer “CI Build” (instead of “CI build” or “ci build”).
+
 - If a step (or job) would benefit from a longer description, include a YAML comment on the line after `name` (unless GitHub adds proper `description` field).

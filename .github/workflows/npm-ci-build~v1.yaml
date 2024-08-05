@@ -1,12 +1,12 @@
 on:
   workflow_call:
     inputs:
-      has-tests:
+      hasTests:
         description: Whether the project has tests. Used to skip test reporting for projects with no tests.
         type: boolean
         required: false
         default: true
-      project-type:
+      projectType:
         description: The type of project. Used to customize the CI build process. MUST be one of `application` or `library`.
         type: string
         required: false
@@ -14,22 +14,24 @@ on:
     outputs:
       semVer:
         description: The SemVer version number of this build (automated with GitVersion).
-        value: ${{ jobs.npm-ci-build.outputs.semVer }}
+        value: ${{ jobs.NpmCiBuild.outputs.semVer }}
 
 jobs:
-  npm-ci-build:
+  NpmCiBuild:
     # Workflow names appear as `origin-name / workflow-name`, so use `npm` for something like `CI Build / npm`
     name: npm
     runs-on: ubuntu-latest
     outputs:
       semVer: ${{ steps.GitVersion.outputs.semVer }}
     steps:
-      - name: Invalid project-type
-        # Switch to contains b/c using `inputs.project-type` twice with `||` failed
-        if: ${{ !contains(fromJSON('["application", "library"]'), inputs.project-type) }}
+      - name: Validate inputs
         uses: actions/github-script@v7
         with:
-          script: core.setFailed("project-type MUST be one of `application` or `library`, but was `${{ inputs.project-type }}`")
+          script: |
+            const { projectType } = inputs
+            if (!["application", "library"].includes(projectType)) {
+              core.setFailed("project-type MUST be one of `application` or `library`, but was `projectType`")
+            }
 
       - name: Checkout self
         uses: actions/checkout@v4
