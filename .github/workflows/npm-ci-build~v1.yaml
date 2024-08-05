@@ -26,7 +26,7 @@ jobs:
     steps:
       - name: Invalid project-type
         # Switch to contains b/c using `inputs.project-type` twice with `||` failed
-        if: !contains(fromJSON('["application", "library"]'), inputs.project-type)
+        if: ${{ !contains(fromJSON('["application", "library"]'), inputs.project-type) }}
         uses: actions/github-script@v7
         with:
           script: core.setFailed("project-type MUST be one of `application` or `library`, but was `${{ inputs.project-type }}`")
