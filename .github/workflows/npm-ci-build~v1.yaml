@@ -30,7 +30,7 @@ jobs:
           script: |
             const { projectType } = ${{ toJson(inputs) }}
             if (!["application", "library"].includes(projectType)) {
-              core.setFailed("project-type MUST be one of `application` or `library`, but was `projectType`")
+              core.setFailed(`projectType MUST be one of 'application' or 'library', but was '${projectType}'`)
             }
 
       - name: Checkout self
