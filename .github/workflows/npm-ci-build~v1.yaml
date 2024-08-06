@@ -28,11 +28,6 @@ jobs:
       npmPackFilename: ${{ steps.Pack.outputs.npmPackFilename }}
       semVer: ${{ steps.GitVersion.outputs.semVer }}
 
-    permissions:
-      attestations: write
-      contents: read
-      id-token: write
-
     runs-on: ubuntu-latest
 
     steps:
@@ -97,9 +92,3 @@ jobs:
           path: ${{ steps.Pack.outputs.npmPackFilename }}
           if-no-files-found: error
           compression-level: 0 # already compressed as gzipped tarball
-
-      - name: Generate artifact attestation
-        if: github.ref == 'refs/heads/main'
-        uses: actions/attest-build-provenance@v1
-        with:
-          subject-path: ${{ steps.Pack.outputs.npmPackFilename }}

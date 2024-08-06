@@ -43,11 +43,6 @@ jobs:
     name: CI Build
 
     uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@main
-
-    permissions:
-      attestations: write
-      contents: read
-      id-token: write
 ```
 
 `v1` runs `ci-build` directly and assumes that the underlying package orchestrates the full build correctly.
