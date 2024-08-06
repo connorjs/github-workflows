@@ -12,6 +12,9 @@ on:
         required: false
         default: library
     outputs:
+      npmPackFilename:
+        description: The name of the packed npm package (the gzipped tarball).
+        value: ${{ jobs.NpmCiBuild.outputs.npmPackFilename }}
       semVer:
         description: The SemVer version number of this build (automated with GitVersion).
         value: ${{ jobs.NpmCiBuild.outputs.semVer }}
@@ -20,9 +23,13 @@ jobs:
   NpmCiBuild:
     # Workflow names appear as `origin name / workflow name`, so use `npm` for something like `CI Build / npm`
     name: npm
-    runs-on: ubuntu-latest
+
     outputs:
+      npmPackFilename: ${{ steps.Pack.outputs.npmPackFilename }}
       semVer: ${{ steps.GitVersion.outputs.semVer }}
+
+    runs-on: ubuntu-latest
+
     steps:
       - name: Validate inputs
         uses: actions/github-script@v7
@@ -60,6 +67,7 @@ jobs:
         with:
           cache: npm
           node-version-file: .node-version
+          registry-url: https://registry.npmjs.org
 
       - name: Install
         run: npm ci --strict-peer-deps
@@ -68,4 +76,19 @@ jobs:
         run: npm run ci-build
 
       # TODO: Test artifacts, using inputs.hasTests
-      # TODO: Publish pack artifact, using inputs.projectType
+
+      - name: Pack
+        id: Pack
+        run: |
+          npm pack
+
+          npmPackFilename=$(jq '.name + "-" + .version + ".tgz"' -r < package.json)
+          echo "npmPackFilename=$npmPackFilename" >> $GITHUB_OUTPUT
+
+      - name: Upload packed artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.Pack.outputs.npmPackFilename }}
+          path: ${{ steps.Pack.outputs.npmPackFilename }}
+          if-no-files-found: error
+          compression-level: 0 # already compressed as gzipped tarball
