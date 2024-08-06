@@ -131,9 +131,8 @@ None.
 
 The job makes the following assumptions about the repository.
 
+- Uses a `.node-version` file in the root of the repository to set the Node.js version.
 - Uses npm (not yarn or pnpm).
-- Publishes successfully with the latest Node.js version.
-  (This workflow does not use the repository’s `.node-version` because it only runs `npm publish`.)
 
 ## Goal: Universal targets
 
