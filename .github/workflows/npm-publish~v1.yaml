@@ -27,13 +27,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout self
+        uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         with:
           name: ${{ inputs.npmPackFilename }}
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .node-version
           registry-url: https://registry.npmjs.org
 
       - name: Publish
