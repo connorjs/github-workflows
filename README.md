@@ -39,8 +39,9 @@ Job that executes `ci-build` logic for npm packages.
 
 ```yaml
 jobs:
-  ci-build:
-    uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml
+  CiBuild:
+    name: CI Build
+    uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@main
 ```
 
 `v1` runs `ci-build` directly and assumes that the underlying package orchestrates the full build correctly.
@@ -57,9 +58,10 @@ jobs:
 
 #### Outputs
 
-|   Name   |                             Description                              |
-|:--------:|:--------------------------------------------------------------------:|
-| `semVer` | The SemVer version number of this build (automated with GitVersion). |
+|       Name        |                             Description                              |
+|:-----------------:|:--------------------------------------------------------------------:|
+| `npmPackFilename` |      The name of the packed npm package (the gzipped tarball).       |
+|     `semVer`      | The SemVer version number of this build (automated with GitVersion). |
 
 #### Assumptions
 
@@ -80,6 +82,39 @@ Use `+semver:(major|minor)` in commit messages appropriately.
 (Patch happens automatically.)
 
 </details>
+
+### npm-publish
+
+Job that publishes an npm package to the npm registry.
+
+```yaml
+jobs:
+  Publish:
+    name: Publish
+    uses: connorjs/github-workflows/.github/workflows/npm-publish~v1.yaml@main
+```
+
+`v1` publishes a pre-packed artifact (assumed to originate from `npm-ci-build`) and pushes a git tag.
+
+#### Inputs
+
+|       Name        |                             Description                              |
+|:-----------------:|:--------------------------------------------------------------------:|
+| `npmPackFilename` |      The name of the packed npm package (the gzipped tarball).       |
+|     `semVer`      | The SemVer version number of this build (automated with GitVersion). |
+
+These inputs match the outputs from [npm-ci-build](#npm-ci-build).
+
+#### Outputs
+
+None.
+
+#### Assumptions
+
+The job makes the following assumptions about the repository.
+
+- Uses a `.node-version` file in the root of the repository to set the Node.js version.
+- Uses npm (not yarn or pnpm).
 
 ## Goal: Universal targets
 
