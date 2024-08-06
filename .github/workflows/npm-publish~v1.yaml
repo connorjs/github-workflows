@@ -37,13 +37,11 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Publish
-        run: npm publish ${{ inputs.npmPackFilename }} --provenance --access public --dry-run
+        run: npm publish ${{ inputs.npmPackFilename }} --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Tag
-        # FIXME: Remove `if: false` when done testing
-        if: false
         run: |
           git tag v${{ inputs.semVer }}
           git push origin tag v${{ inputs.semVer }}
