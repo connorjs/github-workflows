@@ -41,7 +41,13 @@ Job that executes `ci-build` logic for npm packages.
 jobs:
   CiBuild:
     name: CI Build
+
     uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@main
+
+    permissions:
+      attestations: write
+      contents: read
+      id-token: write
 ```
 
 `v1` runs `ci-build` directly and assumes that the underlying package orchestrates the full build correctly.
@@ -91,7 +97,17 @@ Job that publishes an npm package to the npm registry.
 jobs:
   Publish:
     name: Publish
+    needs:
+      - CiBuild
+
     uses: connorjs/github-workflows/.github/workflows/npm-publish~v1.yaml@main
+    with:
+      npmPackFilename: ${{needs.CiBuild.outputs.npmPackFilename}}
+      semVer: ${{needs.CiBuild.outputs.semVer}}
+
+    permissions:
+      contents: write
+      id-token: write
 ```
 
 `v1` publishes a pre-packed artifact (assumed to originate from `npm-ci-build`) and pushes a git tag.
