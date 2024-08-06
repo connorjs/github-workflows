@@ -15,7 +15,7 @@ jobs:
     # Workflow names appear as `origin name / workflow name`, so use `npm` for something like `Publish / npm`
     name: npm
     # FIXME: Uncomment when done testing
-    # if: ${{ github.ref == 'refs/heads/main' }}
+    # if: github.ref == 'refs/heads/main'
 
     permissions:
       contents: write
@@ -31,7 +31,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           cache: npm
-          node-version-file: .node-version
+          node-version: 22
           registry-url: https://registry.npmjs.org
 
       - name: Publish
