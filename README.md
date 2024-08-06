@@ -41,7 +41,6 @@ Job that executes `ci-build` logic for npm packages.
 jobs:
   CiBuild:
     name: CI Build
-
     uses: connorjs/github-workflows/.github/workflows/npm-ci-build~v1.yaml@main
 ```
 
@@ -97,8 +96,10 @@ jobs:
 
     uses: connorjs/github-workflows/.github/workflows/npm-publish~v1.yaml@main
     with:
-      npmPackFilename: ${{needs.CiBuild.outputs.npmPackFilename}}
-      semVer: ${{needs.CiBuild.outputs.semVer}}
+      npmPackFilename: ${{ needs.CiBuild.outputs.npmPackFilename }}
+      semVer: ${{ needs.CiBuild.outputs.semVer }}
+    secrets:
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     permissions:
       contents: write
@@ -114,7 +115,13 @@ jobs:
 | `npmPackFilename` |      The name of the packed npm package (the gzipped tarball).       |
 |     `semVer`      | The SemVer version number of this build (automated with GitVersion). |
 
-These inputs match the outputs from [npm-ci-build](#npm-ci-build).
+These inputs match the outputs from [npm-ci-build](#npm-ci-build).#### Inputs
+
+#### Secrets
+
+|    Name     |                      Description                      |
+|:-----------:|:-----------------------------------------------------:|
+| `NPM_TOKEN` | Credentials token for publishing to the npm registry. |
 
 #### Outputs
 

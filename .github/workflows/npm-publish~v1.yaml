@@ -9,6 +9,10 @@ on:
         description: The SemVer version number of this build (automated with GitVersion).
         type: string
         required: true
+    secrets:
+      NPM_TOKEN:
+        description: Credentials token for publishing to the npm registry.
+        required: true
 
 jobs:
   NpmPublish:
