@@ -87,7 +87,7 @@ jobs:
         run: |
           npm pack
 
-          $npmPackFilename = $(jq '.name + "-" + .version + ".tgz"' < package.json)
+          $npmPackFilename=$(jq '.name + "-" + .version + ".tgz"' < package.json)
           echo "npmPackFilename=$npmPackFilename" >> $GITHUB_OUTPUT
 
       - name: Upload packed artifact
